@@ -1,11 +1,11 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const connectDB = require('./utils/mongo');
 const fs = require('fs');
 const path = require('path');
+const Campaign = require('./models/Campaign');
 
 const client = new Client({ 
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
