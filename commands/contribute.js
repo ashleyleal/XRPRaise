@@ -30,6 +30,12 @@ module.exports = {
             
             campaign.currentAmount += amount;
 
+            campaign.contributors.push({
+                amount: amount,
+                time: new Date(), 
+                contributorId: interaction.user.id, 
+            });
+
             await campaign.save();
 
             await interaction.reply(`Successfully contributed $${amount} to campaign "${campaign.name}". Current amount: $${campaign.currentAmount}.`);
