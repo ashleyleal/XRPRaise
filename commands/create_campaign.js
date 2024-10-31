@@ -25,6 +25,7 @@ module.exports = {
                 goal,
                 creatorId: interaction.user.id,
                 currentAmount: 0, 
+                isComplete: false,
             });
 
             await campaign.save();
