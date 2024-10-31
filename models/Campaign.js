@@ -18,6 +18,10 @@ const campaignSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    isComplete: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const Campaign = mongoose.model('Campaign', campaignSchema);

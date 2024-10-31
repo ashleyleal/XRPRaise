@@ -24,6 +24,10 @@ module.exports = {
                 return interaction.reply({ content: 'Campaign not found.', ephemeral: true });
             }
 
+            if (campaign.isComplete) {
+                return interaction.reply({ content: `Campaign "${campaign.name}" has already ended.`, ephemeral: true });
+            }
+            
             campaign.currentAmount += amount;
 
             await campaign.save();
