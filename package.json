@@ -13,6 +13,7 @@
     "@discordjs/rest": "^2.4.0",
     "discord-api-types": "^0.37.103",
     "discord.js": "^14.16.3",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.7.3"
   }
 }

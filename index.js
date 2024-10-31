@@ -1,15 +1,21 @@
 require('dotenv').config();
-
-const {REST} = require('@discordjs/rest');
+const mongoose = require('mongoose');
+const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
-
 const fs = require('fs');
 const path = require('path');
 
 const client = new Client({ 
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 });
+
+console.log(process.env.MONGODB_URI)
+
+// mongodb
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('Connected to MongoDB'))
+.catch(error => console.error('Error connecting to MongoDB:', error));
 
 // List of all commands
 const commands = [];
