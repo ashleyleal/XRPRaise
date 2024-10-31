@@ -1,10 +1,23 @@
 const mongoose = require('mongoose');
 
 const campaignSchema = new mongoose.Schema({
-  name: String,
-  goal: Number,
-  currentAmount: { type: Number, default: 0 },
-  creatorId: String,
+    name: {
+        type: String,
+        required: true,
+        unique: true, 
+    },
+    goal: {
+        type: Number,
+        required: true,
+    },
+    creatorId: {
+        type: String,
+        required: true,
+    },
+    currentAmount: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const Campaign = mongoose.model('Campaign', campaignSchema);

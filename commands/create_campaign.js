@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const Campaign = require('../models/Campaign'); 
+const Campaign = require('../models/Campaign');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,23 +15,27 @@ module.exports = {
             option.setName('goal')
                 .setDescription('The goal amount for the campaign in XRP')
                 .setRequired(true)),
-                
     async execute(interaction) {
         const name = interaction.options.getString('name');
         const goal = interaction.options.getInteger('goal');
 
-        const campaign = new Campaign({
-            name,
-            goal,
-            creatorId: interaction.user.id,
-        });
-
         try {
+            const campaign = new Campaign({
+                name,
+                goal,
+                creatorId: interaction.user.id,
+                currentAmount: 0, 
+            });
+
             await campaign.save();
             await interaction.reply(`Campaign "${name}" created with a goal of $${goal}.`);
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'There was an error creating the campaign.', ephemeral: true });
+            if (error.code === 11000) { // duplicate error
+                await interaction.reply({ content: 'A campaign with that name already exists. Please choose a different name.', ephemeral: true });
+            } else {
+                await interaction.reply({ content: 'There was an error creating the campaign.', ephemeral: true });
+            }
         }
     },
 };
