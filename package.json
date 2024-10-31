@@ -14,6 +14,8 @@
     "discord-api-types": "^0.37.103",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
-    "mongoose": "^8.7.3"
+    "mongoose": "^8.7.3",
+    "ripple-lib": "^1.10.1",
+    "xrpl": "^4.0.0"
   }
 }

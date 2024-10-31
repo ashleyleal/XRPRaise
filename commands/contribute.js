@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder } = require('discord.js'); 
 const Campaign = require('../models/Campaign');
+const sendXrpPayment = require('../services/xrplPayment'); 
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -51,6 +52,12 @@ module.exports = {
                 campaign.imageUrl ? embed.setThumbnail(campaign.imageUrl) : null;
 
             await interaction.reply({ embeds: [embed] });
+
+            const senderSecret = process.env.XRPL_SENDER_SECRET;
+            const recipientAddress = process.env.XRPL_RECIPIENT_ADDRESS;
+
+            await sendXrpPayment(senderSecret, recipientAddress, amount);
+            
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error processing your contribution.', ephemeral: true });
