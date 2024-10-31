@@ -34,6 +34,9 @@ const campaignSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    deadline: {
+        type: Date,
+    },
     contributors: [contributorSchema] 
 });
 

@@ -22,9 +22,14 @@ module.exports = {
                 .setDescription('A brief description of the campaign')
                 .setRequired(true))
 
+        .addStringOption(option =>
+            option.setName('deadline')
+                .setDescription('The deadline for the campaign (format: YYYY-MM-DD)'))
+
         .addAttachmentOption(option =>
             option.setName('image')
                 .setDescription('Upload an image to represent the campaign')),
+
 
     async execute(interaction) {
         const name = interaction.options.getString('name');
@@ -35,6 +40,8 @@ module.exports = {
 
         const timeCreated = new Date();
 
+        const deadline = interaction.options.getString('deadline') ? new Date(interaction.options.getString('deadline')) : null;
+
         try {
             const campaign = new Campaign({
                 name,
@@ -44,18 +51,21 @@ module.exports = {
                 isComplete: false,
                 description,
                 imageUrl,
-                timeCreated, 
+                timeCreated,
+                deadline, 
             });
 
             await campaign.save();
 
             const embed = new EmbedBuilder() 
                 .setColor('#0099ff')
+                .setAuthor({name: `${interaction.user.username}`, iconURL: interaction.user.avatarURL()})
                 .setTitle(`Campaign Created: "${name}"`)
                 .setDescription(description)
                 .addFields(
                     { name: 'Goal', value: `${goal} XRP`, inline: true },
-                    { name: 'Created At', value: timeCreated.toLocaleString(), inline: true }
+                    { name: 'Created At', value: timeCreated.toLocaleString(), inline: true },
+                    { name: 'Deadline', value: deadline ? deadline.toLocaleString() : 'None', inline: true }
                 );
 
             if (imageUrl) {
