@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('discord.js'); 
 const Campaign = require('../models/Campaign');
 
 module.exports = {
@@ -29,7 +30,6 @@ module.exports = {
             }
             
             campaign.currentAmount += amount;
-
             campaign.contributors.push({
                 amount: amount,
                 time: new Date(), 
@@ -38,7 +38,19 @@ module.exports = {
 
             await campaign.save();
 
-            await interaction.reply(`Successfully contributed $${amount} to campaign "${campaign.name}". Current amount: $${campaign.currentAmount}.`);
+            const embed = new EmbedBuilder()
+                .setColor('#0099ff')
+                .setTitle('Contribution Made!')
+                .setDescription(`${interaction.user.username} contributed ${amount} XRP to "${campaign.name}"!`)
+                .addFields(
+                    { name: 'Current Amount', value: `${campaign.currentAmount} XRP`, inline: true },
+                    { name: 'Goal', value: `${campaign.goal} XRP`, inline: true },
+                )
+                .setTimestamp();
+
+                campaign.imageUrl ? embed.setThumbnail(campaign.imageUrl) : null;
+
+            await interaction.reply({ embeds: [embed] });
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error processing your contribution.', ephemeral: true });
