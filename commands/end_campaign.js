@@ -3,7 +3,7 @@ const Campaign = require('../models/Campaign');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('endcampaign')
+        .setName('end_campaign')
         .setDescription('End a crowdfunding campaign')
         .addStringOption(option =>
             option.setName('campaign_name')
