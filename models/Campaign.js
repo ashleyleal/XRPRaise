@@ -23,6 +23,17 @@ const campaignSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    description: {
+        type: String,
+        required: true,
+    },
+    imageUrl: {
+        type: String,
+    },
+    timeCreated: {
+        type: Date,
+        default: Date.now,
+    },
     contributors: [contributorSchema] 
 });
 
