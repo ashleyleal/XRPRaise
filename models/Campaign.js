@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const contributorSchema = require('./Contributor'); 
 
 const campaignSchema = new mongoose.Schema({
     name: {
@@ -22,6 +23,7 @@ const campaignSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    contributors: [contributorSchema] 
 });
 
 const Campaign = mongoose.model('Campaign', campaignSchema);
