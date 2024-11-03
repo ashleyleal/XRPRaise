@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder } = require('discord.js'); 
 const Campaign = require('../models/Campaign');
 const sendXrpPayment = require('../services/xrplPayment'); 
+const checkBalance = require('../utils/check_balance'); 
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,7 +30,16 @@ module.exports = {
             if (campaign.isComplete) {
                 return interaction.reply({ content: `Campaign "${campaign.name}" has already ended.`, ephemeral: true });
             }
-            
+
+            // check sender's balance before proceeding
+            const senderAddress = process.env.XRPL_SENDER_ADDRESS;
+            const senderSecret = process.env.XRPL_SENDER_SECRET;
+            const balance = await checkBalance(senderAddress, senderSecret);
+
+            if (balance < amount) {
+                return interaction.reply({ content: 'Insufficient balance to complete the transaction.', ephemeral: true });
+            }
+
             campaign.currentAmount += amount;
             campaign.contributors.push({
                 amount: amount,
@@ -53,9 +63,7 @@ module.exports = {
 
             await interaction.reply({ embeds: [embed] });
 
-            const senderSecret = process.env.XRPL_SENDER_SECRET;
             const recipientAddress = process.env.XRPL_RECIPIENT_ADDRESS;
-
             await sendXrpPayment(senderSecret, recipientAddress, amount);
             
         } catch (error) {
