@@ -15,10 +15,15 @@ module.exports = {
         .addIntegerOption(option =>
             option.setName('amount')
                 .setDescription('The amount to contribute')
-                .setRequired(true)),
+                .setRequired(true))
+        .addBooleanOption(option =>
+            option.setName('anonymous')
+                .setDescription('Whether the contribution should be anonymous')
+                .setRequired(false)),
     async execute(interaction) {
         const campaignName = interaction.options.getString('campaign_name'); 
         const amount = interaction.options.getInteger('amount');
+        const isAnonymous = interaction.options.getBoolean('anonymous') || false; 
 
         try {
             const campaign = await Campaign.findOne({ name: campaignName });
@@ -40,11 +45,13 @@ module.exports = {
                 return interaction.reply({ content: 'Insufficient balance to complete the transaction.', ephemeral: true });
             }
 
+            const contributorId = isAnonymous ? '000000000' : interaction.user.id;
+
             campaign.currentAmount += amount;
             campaign.contributors.push({
                 amount: amount,
                 time: new Date(), 
-                contributorId: interaction.user.id, 
+                contributorId: contributorId, 
             });
 
             await campaign.save();
@@ -52,14 +59,14 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor('#0099ff')
                 .setTitle('Contribution Made!')
-                .setDescription(`${interaction.user.username} contributed ${amount} XRP to "${campaign.name}"!`)
+                .setDescription(`${isAnonymous ? 'An anonymous contributor' : interaction.user.username} contributed ${amount} XRP to "${campaign.name}"!`)
                 .addFields(
                     { name: 'Current Amount', value: `${campaign.currentAmount} XRP`, inline: true },
                     { name: 'Goal', value: `${campaign.goal} XRP`, inline: true },
                 )
                 .setTimestamp();
 
-                campaign.imageUrl ? embed.setThumbnail(campaign.imageUrl) : null;
+            campaign.imageUrl ? embed.setThumbnail(campaign.imageUrl) : null;
 
             await interaction.reply({ embeds: [embed] });
 
