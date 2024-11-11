@@ -19,7 +19,7 @@ XRP Raise enables users to:
 The bot is built with:
 - Node.js for handling backend processes and bot commands.
 - Discord.js to connect with the Discord API and create interactive bot commands.
-- Xaman SDK to integrate with the XRP Ledger, enabling secure XRP transactions.
+- Xaman SDK and xrpl.js library to integrate with the XRP Ledger, enabling secure XRP transactions.
 - MongoDB to store campaign details and contribution data.
 - DigitalOcean for deployment, ensuring the bot remains accessible 24/7.
   
