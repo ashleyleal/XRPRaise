@@ -37,7 +37,15 @@ const campaignSchema = new mongoose.Schema({
     deadline: {
         type: Date,
     },
-    contributors: [contributorSchema] 
+    contributors: [contributorSchema],
+    visibility: { 
+        type: String,
+        enum: ['local', 'global'],
+        default: 'local'
+    },
+    guildId: { 
+        type: String,
+    }
 });
 
 const Campaign = mongoose.model('Campaign', campaignSchema);

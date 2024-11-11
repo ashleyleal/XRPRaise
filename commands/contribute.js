@@ -42,6 +42,11 @@ module.exports = {
                 return interaction.editReply({ content: 'Campaign not found.' });
             }
 
+            //check campaign visibility
+            if (campaign.visibility === 'local' && campaign.guildId !== interaction.guildId) {
+                return interaction.editReply({ content: 'This campaign is only accessible in the server where it was created.' });
+            }
+
             if (campaign.isComplete) {
                 return interaction.editReply({ content: `Campaign "${campaign.name}" has already ended.` });
             }
@@ -97,6 +102,7 @@ module.exports = {
                 amount: amount,
                 time: new Date(),
                 contributorId: contributorId,
+                guildId: interaction.guildId // track the server ID of the contribution
             });
 
             await campaign.save();

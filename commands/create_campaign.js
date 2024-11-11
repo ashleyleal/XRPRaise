@@ -23,6 +23,15 @@ module.exports = {
                 .setRequired(true))
 
         .addStringOption(option =>
+            option.setName('visibility')
+                .setDescription('Set the visibility of the campaign')
+                .addChoices(
+                    { name: 'Local', value: 'local' },
+                    { name: 'Global', value: 'global' }
+                )
+                .setRequired(true))
+
+        .addStringOption(option =>
             option.setName('deadline')
                 .setDescription('The deadline for the campaign (format: YYYY-MM-DD)'))
 
@@ -30,29 +39,30 @@ module.exports = {
             option.setName('image')
                 .setDescription('Upload an image to represent the campaign')),
 
-
     async execute(interaction) {
         const name = interaction.options.getString('name');
         const goal = interaction.options.getInteger('goal');
         const description = interaction.options.getString('description');
+        const visibility = interaction.options.getString('visibility');
         const attachment = interaction.options.getAttachment('image');
-        let imageUrl = attachment ? attachment.url : null;
-
+        const imageUrl = attachment ? attachment.url : null;
         const timeCreated = new Date();
-
         const deadline = interaction.options.getString('deadline') ? new Date(interaction.options.getString('deadline')) : null;
+        const guildId = interaction.guildId;
 
         try {
             const campaign = new Campaign({
                 name,
                 goal,
                 creatorId: interaction.user.id,
-                currentAmount: 0, 
+                currentAmount: 0,
                 isComplete: false,
                 description,
                 imageUrl,
                 timeCreated,
-                deadline, 
+                deadline,
+                visibility,
+                guildId: visibility === 'local' ? guildId : null // only set guildId for local campaigns
             });
 
             await campaign.save();
@@ -64,6 +74,7 @@ module.exports = {
                 .setDescription(description)
                 .addFields(
                     { name: 'Goal', value: `${goal} XRP`, inline: true },
+                    { name: 'Visibility', value: visibility.charAt(0).toUpperCase() + visibility.slice(1), inline: true },
                     { name: 'Created At', value: timeCreated.toLocaleString(), inline: true },
                     { name: 'Deadline', value: deadline ? deadline.toLocaleString() : 'None', inline: true }
                 );

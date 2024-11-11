@@ -39,10 +39,14 @@ module.exports = {
                 try {
                     const user = await interaction.client.users.fetch(contributor.contributorId);
                     const tag = user.tag;
+                    
+                    const guild = interaction.client.guilds.cache.get(contributor.guildId);
+                    const guildName = guild ? guild.name : 'Unknown Server';
 
                     embed.addFields(
                         { name: `${medal} Contributor`, value: `${tag}`, inline: true },
                         { name: 'Amount', value: `${contributor.amount} XRP`, inline: true },
+                        { name: 'Server', value: `${guildName}`, inline: true },
                         { name: 'Date', value: contributor.time.toLocaleString(), inline: true }
                     );
 
@@ -51,6 +55,7 @@ module.exports = {
                     embed.addFields(
                         { name: `${medal} Contributor`, value: `Unknown User`, inline: true },
                         { name: 'Amount', value: `${contributor.amount} XRP`, inline: true },
+                        { name: 'Server', value: 'Unknown Server', inline: true },
                         { name: 'Date', value: contributor.time.toLocaleString(), inline: true }
                     );
                 }
