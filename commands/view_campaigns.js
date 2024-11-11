@@ -3,7 +3,7 @@ const Campaign = require('../models/Campaign');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('viewcampaigns')
+        .setName('view_campaigns')
         .setDescription('View all crowdfunding campaigns')
         .addBooleanOption(option =>
             option.setName('isactive')
