@@ -56,4 +56,12 @@ client.on('interactionCreate', async interaction => {
 
 client.login(process.env.TOKEN);
 
+const http = require('http');
+const PORT = process.env.PORT || 8080;
 
+http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Health check passed');
+}).listen(PORT, () => {
+    console.log(`Health check server running on port ${PORT}`);
+});
