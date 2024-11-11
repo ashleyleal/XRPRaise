@@ -2,7 +2,7 @@ const axios = require('axios');
 
 async function createXummPayload(payloadData) {
     try {
-        const response = await axios.post('https://xumm.app/api/v1/platform/payload', payloadData, {
+        const response = await axios.post('https://test.xumm.app/api/v1/platform/payload', payloadData, {
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-key': process.env.XUMM_API_KEY,

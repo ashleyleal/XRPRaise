@@ -1,8 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder } = require('discord.js'); 
 const Campaign = require('../models/Campaign');
-const sendXrpPayment = require('../services/xrplPayment'); 
-const checkBalance = require('../utils/check_balance'); 
+const createXummPayload = require('../utils/createXummPayload'); 
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -36,15 +35,6 @@ module.exports = {
                 return interaction.reply({ content: `Campaign "${campaign.name}" has already ended.`, ephemeral: true });
             }
 
-            // check sender's balance before proceeding
-            const senderAddress = process.env.XRPL_SENDER_ADDRESS;
-            const senderSecret = process.env.XRPL_SENDER_SECRET;
-            const balance = await checkBalance(senderAddress, senderSecret);
-
-            if (balance < amount) {
-                return interaction.reply({ content: 'Insufficient balance to complete the transaction.', ephemeral: true });
-            }
-
             const contributorId = isAnonymous ? '000000000' : interaction.user.id;
 
             campaign.currentAmount += amount;
@@ -58,8 +48,8 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor('#0099ff')
-                .setTitle('Contribution Made!')
-                .setDescription(`${isAnonymous ? 'An anonymous contributor' : interaction.user.username} contributed ${amount} XRP to "${campaign.name}"!`)
+                .setTitle('Contribution Created!')
+                .setDescription(`${isAnonymous ? 'An anonymous contributor' : interaction.user.username} is contributing ${amount} XRP to "${campaign.name}"!`)
                 .addFields(
                     { name: 'Current Amount', value: `${campaign.currentAmount} XRP`, inline: true },
                     { name: 'Goal', value: `${campaign.goal} XRP`, inline: true },
@@ -70,9 +60,30 @@ module.exports = {
 
             await interaction.reply({ embeds: [embed] });
 
-            const recipientAddress = process.env.XRPL_RECIPIENT_ADDRESS;
-            await sendXrpPayment(senderSecret, recipientAddress, amount);
-            
+            const payloadData = {
+                txjson: {
+                    TransactionType: 'Payment',
+                    Destination: process.env.XRPL_RECIPIENT_ADDRESS,
+                    Amount: (amount * 1000000).toString() // convert XRP to drops
+                },
+                options: {
+                    return_url: {
+                        app: 'https://yourapp.com/transaction-confirmation',
+                        web: 'https://yourapp.com/transaction-web'
+                    },
+                    expire: 300 // payload expiration time in seconds
+                }
+            };
+
+            // send payload to XUMM and get the approval URL
+            const payload = await createXummPayload(payloadData);
+
+            // reply with the approval URL for the user to authorize the transaction in the XUMM app
+            await interaction.followUp({
+                content: `Please approve your contribution by clicking [here](${payload.next.always})`,
+                ephemeral: true
+            });
+
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error processing your contribution.', ephemeral: true });
