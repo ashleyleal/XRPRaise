@@ -3,7 +3,9 @@
 ![Empowering Communities, One XRP at a Time](https://github.com/user-attachments/assets/9c69a1ec-9840-458d-9ae9-abea7bfed812)
 
 ## Inspiration 🌟
+The vision for XRP Raise was to create a platform similar to GoFundMe but seamlessly integrated into a social platform like Discord. My goal was to build an easy-to-use, fee-free fundraising tool that could be utilized for various purposes, from charity initiatives to project funding. I saw this as especially valuable for university and school communities, where student clubs, projects, and initiatives could receive direct support from peers and members. 
 
+By simplifying the process and eliminating fees, XRP Raise aims to empower communities to fund meaningful causes in an accessible and engaging way.
 
 ## What It Does ⚙️
 
