@@ -5,8 +5,6 @@
 ## Inspiration 🌟
 The vision for XRP Raise was to create a platform similar to GoFundMe but seamlessly integrated into a social platform like Discord. My goal was to build an easy-to-use, fee-free fundraising tool that could be utilized for various purposes, from charity initiatives to project funding. I saw this as especially valuable for university and school communities, where student clubs, projects, and initiatives could receive direct support from peers and members. 
 
-By simplifying the process and eliminating fees, XRP Raise aims to empower communities to fund meaningful causes in an accessible and engaging way.
-
 ## What It Does ⚙️
 
 XRP Raise enables users to:
@@ -14,6 +12,7 @@ XRP Raise enables users to:
 - Accept XRP donations using the Xaman app, providing secure and transparent transactions.
 - Track and display live campaign progress, allowing users to see contributions in real time.
 - Automatically verify donation transactions and notify campaign creators of milestones.
+- Set campaigns as either "local," accessible only within the server it was created, or "global," visible across all servers.
 
 ## How I Built It 🛠️
 
@@ -26,13 +25,13 @@ The bot is built with:
   
 ## Challenges I Ran Into 🚧
 
-The biggest challenge was figuring out the best way to securely connect the user’s wallet without literally requiring them to input their secret key into the bot (lol). After some research, I found the Xaman app SDK (previously Xumm), which had solid documentation and seemed suitable for securely signing transactions. However, I encountered issues when trying to activate Testnet accounts in the Xaman app—they wouldn’t show up as activated despite attempts to fund them with XRP from the Testnet faucet. This limitation prevented me from fully testing and implementing the feature as planned as I couldn't use my Testnet accounts on the app.
+The biggest challenge was figuring out the best way to securely connect the user’s wallet without literally requiring them to input their secret key or any other wallet info into the Discord bot directly (since I thought that would be a really bad idea lol). After some research, I found the Xaman app SDK (previously Xumm), which had solid documentation and seemed suitable for securely signing transactions outside of Discord. However, I encountered issues when trying to activate Testnet accounts in the Xaman app—they wouldn’t show up as activated despite attempts to fund them with XRP from the Testnet faucet. This limitation prevented me from fully testing and implementing the feature as planned as I couldn't use my Testnet accounts on the app.
 
 ## What I Learned 📚
 
-- XRP Ledger’s consensus algorithm and how transactions are verified and processed efficiently.
-- Transaction handling on the ledger and using the Xaman SDK to send payloads to the app.
+- XRP Ledger’s consensus algorithm and how transactions are verified and processed efficiently. The [XRPL Learning Portal](https://learn.xrpl.org/) really came in clutch for understanding all the basics!
+- Transaction handling on the ledger with xrpl.js and using the Xaman SDK to send payloads to the app.
 - Discord.js is super fun to work with!
-- Integrating secure payment and donation systems in a user-friendly way on a social platform.
+- Integrating secure payment and donation systems in a user-friendly way on a social platform like Discord.
 
 ## Getting Started 🚀
