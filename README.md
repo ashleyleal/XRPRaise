@@ -36,4 +36,4 @@ The biggest challenge was figuring out the best way to securely connect the user
 
 ## Getting Started 🚀
 
-A link to invite the bot to your server is available to judges upon request.
+A link to invite the bot to your server is available upon request.
