@@ -35,3 +35,5 @@ The biggest challenge was figuring out the best way to securely connect the user
 - Integrating secure payment and donation systems in a user-friendly way on a social platform like Discord.
 
 ## Getting Started 🚀
+
+A link to invite the bot to your server is available to judges upon request.
