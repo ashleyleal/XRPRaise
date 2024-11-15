@@ -2,6 +2,8 @@
 
 ![Empowering Communities, One XRP at a Time](https://github.com/user-attachments/assets/9c69a1ec-9840-458d-9ae9-abea7bfed812)
 
+This project is my submission for Ripple's XRPL Student Builder Residency. I am pleased to announce that I won first place, receiving the Judges’ Choice Gold Award (1st overall), along with honors in other categories, including 1st Most Innovative and 2nd Best Deployed Project. This achievement was out of 12 projects, following a highly competitive application process to join the program.
+
 ## Inspiration 🌟
 The vision for XRP Raise was to create a platform similar to GoFundMe but seamlessly integrated into a social platform like Discord. My goal was to build an easy-to-use, fee-free fundraising tool that could be utilized for various purposes, from charity initiatives to project funding. I saw this as especially valuable for university and school communities, where student clubs, projects, and initiatives could receive direct support from peers and members. 
 
